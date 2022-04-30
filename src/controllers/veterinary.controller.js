@@ -23,14 +23,17 @@ export const addVeterinary = async (req, res) => {
 
     await veterinary.save();
 
-    // Enviar el email
+    // Send confirmation email
     emailRegister({
       email,
       name,
       token: veterinary.token,
     });
 
-    res.status(201).json({ ok: true, msg: 'Registered!', veterinary });
+    res.status(201).json({
+      ok: true,
+      msg: 'User successfully created, check your email',
+    });
   } catch (error) {
     console.log(error);
     console.log({ error: error.message });
@@ -91,14 +94,20 @@ export const passwordRecovery = async (req, res) => {
   const { email } = req.body;
   const userExist = await Veterinary.findOne({ email });
 
-  // TODO: Validar si user existe en  routers
+  // TODO: Validar si user existe en  routers - UNIR estos dos checks
   if (!userExist)
     return res.status(401).json({ ok: false, msg: 'User does not exist!' });
+
+  // TODO: Validar usuario confirmado con un middleware
+  if (!userExist.confirmed)
+    return res
+      .status(403)
+      .json({ ok: false, msg: 'Your account has not been confirmed!' });
 
   userExist.token = genId();
   await userExist.save();
 
-  // Enviar nuevo token por email - enviar email con instrucciones
+  // Send email with token/instructions
   const { name, token } = userExist;
   emailResetPassword({
     email,
@@ -108,7 +117,7 @@ export const passwordRecovery = async (req, res) => {
 
   res
     .status(200)
-    .json({ ok: true, msg: 'An e-mail with instructions has been sent.' });
+    .json({ ok: true, msg: 'An e-mail with instructions has been sent' });
 };
 
 // TODO: ??? Validar token en el aut.middleware
@@ -139,7 +148,7 @@ export const genNewPassword = async (req, res) => {
 
     res
       .status(200)
-      .json({ ok: true, msg: 'Password updated correctly!', user });
+      .json({ ok: true, msg: 'Password successfully updated!', user });
   } catch (error) {
     console.log(error);
     res.status(500).json({ ok: false, msg: 'Something went wrong!' });
@@ -166,7 +175,9 @@ export const updateProfile = async (req, res) => {
     { new: true }
   );
 
-  res.status(200).json({ ok: true, user: updatedUser });
+  res
+    .status(200)
+    .json({ ok: true, msg: 'User successfully updated!', user: updatedUser });
 };
 
 export const updatePassword = async (req, res) => {

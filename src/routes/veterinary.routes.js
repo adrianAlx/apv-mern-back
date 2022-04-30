@@ -30,9 +30,12 @@ router.route('/').post(
       min: 6,
     }),
     validateInputs,
-    check('email').custom(email => isAlreadyRegistered(email, 'veterinary')),
+    check('email').custom((email, { req }) =>
+      isAlreadyRegistered(email, 'veterinary', req)
+    ),
     validateInputs,
   ],
+
   addVeterinary
 );
 
@@ -57,7 +60,7 @@ router
   .post(genNewPassword);
 
 // Private
-router.route('/perfil').get(protectWithJWT, perfil);
+router.route('/profile').get(protectWithJWT, perfil);
 router.route('/profile/:id').put(
   [
     protectWithJWT,

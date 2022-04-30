@@ -13,7 +13,7 @@ export const checkLoginCredentials = async (req, res, next) => {
       msg: 'There was a problem logging in. Check your email and password or create an account.',
     });
 
-  // Verificar si es un User Confirmado - email - token
+  // Check if it is a confirmed user
   if (!user.confirmed)
     return res
       .status(403)
