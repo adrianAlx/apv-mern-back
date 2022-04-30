@@ -34,10 +34,6 @@ export const getPatient = async (req, res) => {
   const { id } = req.params;
   const patient = await Patient.findById(id);
 
-  // // Helper - custom: Si el veterinario de este pet no es el auth, NO deberia verlo
-  // if (patient.veterinary._id.toString() !== authenticatedUser._id.toString())
-  //   return res.status(401).json({ ok: false, msg: 'Unauthorized!' });
-
   res.status(200).json({ ok: true, msg: 'Get patient', patient });
 };
 

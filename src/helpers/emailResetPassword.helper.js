@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 
 import nodemailer from 'nodemailer';
 import {
@@ -22,7 +21,7 @@ export const emailResetPassword = async dataForEmail => {
 
   const { email, name, token } = dataForEmail;
 
-  // Enviar emial
+  // Send emial
   const info = await transport.sendMail({
     from: 'APV - Administrador de Pacientes de Veterinaria',
     to: email,

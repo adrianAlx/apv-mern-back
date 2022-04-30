@@ -49,7 +49,6 @@ export const confirmUser = async (req, res) => {
     return res.status(400).json({ ok: false, msg: 'Invalid token!' });
 
   try {
-    // Actualizar documento MongoDB
     unconfirmedUser.token = null;
     unconfirmedUser.confirmed = true;
     await unconfirmedUser.save();
@@ -72,8 +71,6 @@ export const authenticate = async (req, res) => {
       .status(500)
       .json({ msg: 'Sorry, the token could not be generated.' });
 
-  // console.log(user.id);
-
   res.status(200).json({
     ok: true,
     msg: 'Successful login!',
@@ -88,9 +85,7 @@ export const authenticate = async (req, res) => {
   });
 };
 
-// // Validar el email del user  -  Recuperar pass
-// generateRecoveryToken
-export const passwordRecovery = async (req, res) => {
+export const generateRecoveryToken = async (req, res) => {
   const { email } = req.body;
   const userExist = await Veterinary.findOne({ email });
 

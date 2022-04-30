@@ -1,3 +1,5 @@
+'use strict';
+
 import express from 'express';
 import { check } from 'express-validator';
 
@@ -6,7 +8,7 @@ import {
   perfil,
   confirmUser,
   authenticate,
-  passwordRecovery,
+  generateRecoveryToken,
   validateToken,
   genNewPassword,
   updateProfile,
@@ -53,7 +55,7 @@ router.post(
   authenticate
 );
 
-router.post('/password-recovery', passwordRecovery);
+router.post('/password-recovery', generateRecoveryToken);
 router
   .route('/password-recovery/:token')
   .get(validateToken)

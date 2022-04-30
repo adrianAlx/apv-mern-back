@@ -1,5 +1,4 @@
 'use strict';
-console.clear();
 
 import express from 'express';
 

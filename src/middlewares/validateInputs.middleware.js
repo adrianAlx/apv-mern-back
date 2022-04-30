@@ -1,3 +1,5 @@
+'use strict';
+
 import { validationResult } from 'express-validator';
 
 export const validateInputs = (req, res, next) => {

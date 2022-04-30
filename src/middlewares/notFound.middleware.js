@@ -1,3 +1,5 @@
+'use strict';
+
 export default (_req, res) =>
   res
     .status(404)

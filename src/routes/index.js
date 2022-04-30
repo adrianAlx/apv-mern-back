@@ -1,3 +1,5 @@
+'use strict';
+
 import veterinaryRoutes from './veterinary.routes.js';
 import patientRoutes from './patient.routes.js';
 

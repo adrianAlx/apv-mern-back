@@ -1,3 +1,5 @@
+'use strict';
+
 import mongoose from 'mongoose';
 import bcryptjs from 'bcryptjs';
 const { Schema, model } = mongoose;

@@ -4,7 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
-import morgan from 'morgan';
+// import morgan from 'morgan';
 
 import { FRONT_END_URL } from '../config/index.js';
 
@@ -24,7 +24,7 @@ export const setupMiddlewares = app => {
   app.use(express.urlencoded({ extended: false }));
   // app.use(express.static(path.join(__dirname, './../public')));
   app.use(compression()).use(helmet());
-  app.use(morgan('dev'));
+  // app.use(morgan('dev'));
 
   // Other middlewares
 };
