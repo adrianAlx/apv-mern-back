@@ -22,7 +22,7 @@ export const isAlreadyRegistered = async (query, collection, req) => {
 
     case 'veterinary-update-profile':
       model = await Veterinary.findOne({ email: req.authenticatedUser.email });
-      // console.log(model, email);
+
       if (model.email !== email) {
         const existEmail = await Veterinary.findOne({ email });
         if (existEmail) throw new Error('Email already registered!');

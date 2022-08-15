@@ -3,10 +3,10 @@
 import { Patient } from '../models/index.js';
 
 export const addPatient = async (req, res) => {
-  const { name, email, owner, symptoms } = req.body;
+  const { name, email, owner, symptoms, date } = req.body;
   const { authenticatedUser } = req;
 
-  const patient = new Patient({ name, email, owner, symptoms });
+  const patient = new Patient({ name, email, owner, symptoms, date });
   patient.veterinary = authenticatedUser.id;
 
   try {

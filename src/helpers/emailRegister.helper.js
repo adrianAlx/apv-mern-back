@@ -35,6 +35,4 @@ export const emailRegister = async dataForEmail => {
       <p>Si tu no creaste esta cuenta, puedes ignorar este mensaje.</p>
     `,
   });
-
-  console.log('Mensaje enviado: %s', info.messageId);
 };

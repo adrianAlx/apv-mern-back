@@ -1,7 +1,6 @@
 'use strict';
 
 import express from 'express';
-import { check } from 'express-validator';
 
 import {
   addVeterinary,
@@ -14,48 +13,24 @@ import {
   updateProfile,
   updatePassword,
 } from '../controllers/veterinary.controller.js';
-import { isAlreadyRegistered, idExistInDB } from '../helpers/index.js';
 import {
-  validateInputs,
-  checkLoginCredentials,
   protectWithJWT,
+  signUpRules,
+  loginRules,
+  updateProfileRules,
 } from '../middlewares/index.js';
 
 const router = express.Router();
 
 // Public
-router.route('/').post(
-  [
-    check('email', 'Invalid email!').isEmail(),
-    check('name', 'Invalid name!').notEmpty(),
-    check('password', 'Password must be longer than 6 characters!').isLength({
-      min: 6,
-    }),
-    validateInputs,
-    check('email').custom((email, { req }) =>
-      isAlreadyRegistered(email, 'veterinary', req)
-    ),
-    validateInputs,
-  ],
-
-  addVeterinary
-);
+router.route('/').post(signUpRules(), addVeterinary);
 
 router.get('/confirm/:token', confirmUser);
 
-router.post(
-  '/login',
-  [
-    check('email', 'Invalid email!').isEmail(),
-    check('password', 'Password is required!').notEmpty(),
-    validateInputs,
-    checkLoginCredentials,
-  ],
-
-  authenticate
-);
+router.post('/login', loginRules(), authenticate);
 
 router.post('/password-recovery', generateRecoveryToken);
+
 router
   .route('/password-recovery/:token')
   .get(validateToken)
@@ -64,19 +39,7 @@ router
 // Private
 router.route('/profile').get(protectWithJWT, perfil);
 router.route('/profile/:id').put(
-  [
-    protectWithJWT,
-    check('email', 'Invalid email!').isEmail(),
-    check('id', 'Invalid ID!').isMongoId(),
-    check('name', 'Name is requires').notEmpty(),
-    check('email').custom((email, { req }) =>
-      isAlreadyRegistered(email, 'veterinary-update-profile', req)
-    ),
-    validateInputs,
-
-    check('id').custom((id, { req }) => idExistInDB(id, 'user', req)),
-    validateInputs,
-  ],
+  [protectWithJWT, ...updateProfileRules()],
 
   updateProfile
 );
